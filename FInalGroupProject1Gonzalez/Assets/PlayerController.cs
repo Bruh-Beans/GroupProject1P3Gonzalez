@@ -7,16 +7,15 @@ public class PlayerController : MonoBehaviour
 {
     private float horizontal;
     private float speed = 8f;
+    private float jumpingPower = 16f;
     private bool isFacingRight = true;
     private bool isDead = false;
-    private int jumpCount = 0;  // Track number of jumps
 
     public TextMeshProUGUI gameOverText;
     public float upForce = 200f; // Adjustable in-game
+    bool grounded;
 
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private LayerMask groundLayer;
 
     void Start()
     {
@@ -29,17 +28,11 @@ public class PlayerController : MonoBehaviour
         {
             horizontal = Input.GetAxisRaw("Horizontal");
 
-            // Check if grounded to reset jump count
-            if (IsGrounded())
+            // Jumping action when pressing Space
+            if (Input.GetKeyDown(KeyCode.Space) && grounded)
             {
-                jumpCount = 0; // Reset jumps when player touches the ground
-            }
-
-            // Double jump when pressing Space, only if jumpCount is less than 2
-            if (Input.GetKeyDown(KeyCode.Space) && jumpCount < 2)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, upForce);
-                jumpCount++; // Increment jump count
+                rb.velocity = Vector2.zero;
+                rb.AddForce(new Vector2(0, upForce), ForceMode2D.Impulse);
             }
 
             // Reduce jump height when releasing Space while moving up
@@ -55,12 +48,6 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-    }
-
-    private bool IsGrounded()
-    {
-        // This method checks if the player is on the ground layer
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
 
     private void Flip()
@@ -83,5 +70,23 @@ public class PlayerController : MonoBehaviour
         // Mark as dead to prevent further actions
         isDead = true;
     }
-}
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            Vector3 normal = other.GetContact(0).normal;
+            if(normal == Vector3.up)
+            {
+                grounded = true;
+            }
 
+        }
+    }
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            grounded = false;
+        }
+    }
+}
