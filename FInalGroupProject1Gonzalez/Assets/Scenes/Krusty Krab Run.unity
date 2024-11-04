@@ -670,6 +670,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameOverText: {fileID: 0}
   upForce: 10
+  animator: {fileID: 2047228983}
   rb: {fileID: 2047228979}
 --- !u!50 &2047228979
 Rigidbody2D:

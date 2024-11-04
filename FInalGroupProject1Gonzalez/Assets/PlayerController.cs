@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI gameOverText;
     public float upForce = 200f; // Adjustable in-game
     bool grounded;
+    public Animator animator;
 
     [SerializeField] private Rigidbody2D rb;
 
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isDead) // Only allow actions if player is not dead
         {
+            animator.SetFloat("Speed", Mathf.Abs(horizontal));
             horizontal = Input.GetAxisRaw("Horizontal");
 
             // Jumping action when pressing Space
@@ -33,12 +35,14 @@ public class PlayerController : MonoBehaviour
             {
                 rb.velocity = Vector2.zero;
                 rb.AddForce(new Vector2(0, upForce), ForceMode2D.Impulse);
+                animator.SetBool("IsJumping", true);
             }
 
             // Reduce jump height when releasing Space while moving up
             if (Input.GetKeyUp(KeyCode.Space) && rb.velocity.y > 0f)
             {
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+                animator.SetBool("IsJumping", true);
             }
 
             Flip();
