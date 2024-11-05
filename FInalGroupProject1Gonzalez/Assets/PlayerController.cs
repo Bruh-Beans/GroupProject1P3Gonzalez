@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,12 +16,22 @@ public class PlayerController : MonoBehaviour
     public float upForce = 200f; // Adjustable in-game
     bool grounded;
     public Animator animator;
+    [Header("Events")]
+    [Space]
+
+    public UnityEvent OnLandEvent;
 
     [SerializeField] private Rigidbody2D rb;
 
+    private void Awake()
+    {
+        
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        if (OnLandEvent == null)
+            OnLandEvent = new UnityEvent();
     }
 
     void Update()
@@ -36,6 +47,7 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = Vector2.zero;
                 rb.AddForce(new Vector2(0, upForce), ForceMode2D.Impulse);
                 animator.SetBool("IsJumping", true);
+                grounded = false;
             }
 
             // Reduce jump height when releasing Space while moving up
@@ -47,6 +59,10 @@ public class PlayerController : MonoBehaviour
 
             Flip();
         }
+    }
+    public void OnLanding ()
+    {
+        animator.SetBool("IsJumping", false);
     }
 
     private void FixedUpdate()
@@ -82,6 +98,7 @@ public class PlayerController : MonoBehaviour
             if(normal == Vector3.up)
             {
                 grounded = true;
+                OnLanding();
             }
 
         }
@@ -91,6 +108,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             grounded = false;
+            animator.SetBool("IsJumping", true);
         }
     }
 }

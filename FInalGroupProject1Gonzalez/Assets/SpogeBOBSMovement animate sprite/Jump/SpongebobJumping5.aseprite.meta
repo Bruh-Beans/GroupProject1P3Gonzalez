@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5dc6504d152edb5409ced461f7b4fcf2
+guid: 1e5cdfd3edceb2c4ba449bce03643127
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -121,18 +121,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Spongebobjumping 3
+  - name: SpongebobJumping5
     originalName: 
-    pivot: {x: 0.48, y: -0.06382979}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 25
-      height: 47
-    spriteID: e11e1a98dab4a834fb8f2e631e1f6bc0
+      width: 22
+      height: 32
+    spriteID: f07636fc4f1aa5f4189ce35b6b0bbd9c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -144,25 +144,25 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 665215228
-    name: Spongebobjumping 3
+    guid: 285067160
+    name: SpongebobJumping5
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Spongebobjumping 3
+    - name: SpongebobJumping5
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 4
-        y: 3
-        width: 25
-        height: 47
-      spriteId: e11e1a98dab4a834fb8f2e631e1f6bc0
+        x: 5
+        y: 0
+        width: 22
+        height: 32
+      spriteId: f07636fc4f1aa5f4189ce35b6b0bbd9c
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 32, y: 50}
+  canvasSize: {x: 32, y: 32}
