@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
     }
     public void OnLanding ()
     {
-        animator.SetBool("IsJumping", false);
+      animator.SetBool("IsJumping", false);
     }
 
     private void FixedUpdate()
@@ -81,15 +81,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        Destroy(gameObject);
-        Destroy(other.gameObject);
-        gameOverText.gameObject.SetActive(true);
+    //private void OnTriggerEnter2D(Collider2D other)
+   // {
+        //Destroy(gameObject);
+       // Destroy(other.gameObject);
+      //  gameOverText.gameObject.SetActive(true);
 
         // Mark as dead to prevent further actions
-        isDead = true;
-    }
+      //  isDead = true;
+   // }
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground"))
