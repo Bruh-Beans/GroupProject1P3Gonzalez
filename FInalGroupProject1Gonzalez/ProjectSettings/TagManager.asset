@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground
   - Teleporter
+  - Wall
+  - Breakable
   layers:
   - Default
   - TransparentFX

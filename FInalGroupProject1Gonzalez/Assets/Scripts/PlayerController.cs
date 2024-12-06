@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
 {
     private float horizontal;
     private float speed = 8f;
-    private float jumpingPower = 16f;
     private bool isFacingRight = true;
     private bool isDead = false;
 
@@ -25,8 +24,9 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        
+
     }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -60,9 +60,10 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
     }
-    public void OnLanding ()
+
+    public void OnLanding()
     {
-      animator.SetBool("IsJumping", false);
+        animator.SetBool("IsJumping", false);
     }
 
     private void FixedUpdate()
@@ -81,28 +82,31 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //private void OnTriggerEnter2D(Collider2D other)
-   // {
-        //Destroy(gameObject);
-       // Destroy(other.gameObject);
-      //  gameOverText.gameObject.SetActive(true);
-
-        // Mark as dead to prevent further actions
-      //  isDead = true;
-   // }
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        // Only destroy the block if the player is falling onto it
+        if (other.gameObject.CompareTag("Breakable") && !grounded && rb.velocity.y < 0)
         {
             Vector3 normal = other.GetContact(0).normal;
-            if(normal == Vector3.up)
+            if (normal == Vector3.up) // Ensure the player lands from above
+            {
+                // Destroy the block when the player lands on it
+                Destroy(other.gameObject);
+                grounded = true;
+                OnLanding(); // Trigger landing logic
+            }
+        }
+        else if (other.gameObject.CompareTag("Ground")) // Regular ground landing logic
+        {
+            Vector3 normal = other.GetContact(0).normal;
+            if (normal == Vector3.up)
             {
                 grounded = true;
                 OnLanding();
             }
-
         }
     }
+
     private void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground"))
@@ -112,3 +116,4 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
+
