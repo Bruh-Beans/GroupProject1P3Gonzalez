@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StartButton : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private Button button;
+    private GameManager gameManager;
+
+    //there are 3 difficultys... this is the trigger for the buttons so that a difficulty is chosen and a signal is sent to the player controller
+    //--- script where the spawn and speed interval changes based on the difficulty
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        button = GetComponent<Button>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 }

@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Rigidbody2D rb;
 
+    private bool isJumping = false;  // This will track if the player is in the "jumping phase"
+
     private void Awake()
     {
 
@@ -48,6 +50,8 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(new Vector2(0, upForce), ForceMode2D.Impulse);
                 animator.SetBool("IsJumping", true);
                 grounded = false;
+
+                isJumping = true;  // Start the jumping phase
             }
 
             // Reduce jump height when releasing Space while moving up
@@ -84,25 +88,23 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        // Only destroy the block if the player is falling onto it
-        if (other.gameObject.CompareTag("Breakable") && !grounded && rb.velocity.y < 0)
+        // Check if the player collides with a "Breakable" block while in the jumping phase
+        if (isJumping && other.gameObject.CompareTag("Breakable"))
         {
-            Vector3 normal = other.GetContact(0).normal;
-            if (normal == Vector3.up) // Ensure the player lands from above
-            {
-                // Destroy the block when the player lands on it
-                Destroy(other.gameObject);
-                grounded = true;
-                OnLanding(); // Trigger landing logic
-            }
+            Destroy(other.gameObject); // Destroy the breakable block
+            isJumping = false;  // End the jumping phase
+            grounded = true; // The player is considered grounded
+            OnLanding(); // Trigger landing animation
         }
-        else if (other.gameObject.CompareTag("Ground")) // Regular ground landing logic
+        // Check if the player collides with regular "Ground"
+        else if (other.gameObject.CompareTag("Ground"))
         {
             Vector3 normal = other.GetContact(0).normal;
-            if (normal == Vector3.up)
+            if (normal == Vector3.up) // Ensure the player lands on the ground
             {
-                grounded = true;
-                OnLanding();
+                grounded = true; // The player is considered grounded
+                OnLanding(); // Trigger landing animation
+                isJumping = false; // End the jumping phase
             }
         }
     }
@@ -116,4 +118,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
+
+
 
