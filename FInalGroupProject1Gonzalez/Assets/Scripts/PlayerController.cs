@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Rigidbody2D rb;
 
-    private bool isJumping = false;  // This will track if the player is in the "jumping phase"
+    private bool isJumping = false; // This will track if the player is in the "jumping phase"
 
     private void Awake()
     {
@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("IsJumping", true);
                 grounded = false;
 
-                isJumping = true;  // Start the jumping phase
+                isJumping = true; // Start the jumping phase
             }
 
             // Reduce jump height when releasing Space while moving up
@@ -88,25 +88,47 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        // Check if the player collides with a "Breakable" block while in the jumping phase
         if (isJumping && other.gameObject.CompareTag("Breakable"))
         {
-            Destroy(other.gameObject); // Destroy the breakable block
-            isJumping = false;  // End the jumping phase
-            grounded = true; // The player is considered grounded
-            OnLanding(); // Trigger landing animation
+            // Get the Animator component of the Breakable block
+            Animator blockAnimator = other.gameObject.GetComponent<Animator>();
+
+            if (blockAnimator != null)
+            {
+                blockAnimator.SetTrigger("PlayBreak"); // Trigger the block's animation
+            }
+
+            // Destroy the block after the animation plays (adjust timing as needed)
+            Destroy(other.gameObject, 0.15f); // Add a slight delay to match animation length
+            isJumping = false; // End the jumping phase
         }
-        // Check if the player collides with regular "Ground"
         else if (other.gameObject.CompareTag("Ground"))
         {
             Vector3 normal = other.GetContact(0).normal;
             if (normal == Vector3.up) // Ensure the player lands on the ground
             {
-                grounded = true; // The player is considered grounded
-                OnLanding(); // Trigger landing animation
-                isJumping = false; // End the jumping phase
+                grounded = true;
+                OnLanding();
+                isJumping = false;
             }
         }
+    }
+
+
+
+
+    private IEnumerator DestroyAfterAnimation(GameObject block)
+    {
+        Animator blockAnimator = block.GetComponent<Animator>();
+
+        // Wait for the animation to finish
+        if (blockAnimator != null)
+        {
+            AnimatorStateInfo animationState = blockAnimator.GetCurrentAnimatorStateInfo(0);
+            yield return new WaitForSeconds(animationState.length); // Wait for the animation length
+        }
+
+        Destroy(block); // Destroy the block after the animation ends
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -118,6 +140,4 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
-
-
 
