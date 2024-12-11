@@ -1,3 +1,5 @@
+
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     [Header("Events")]
     [Space]
-
+    
     public UnityEvent OnLandEvent;
 
     [SerializeField] private Rigidbody2D rb;
@@ -88,24 +90,34 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (isJumping && other.gameObject.CompareTag("Breakable"))
+        if (other.gameObject.CompareTag("Breakable"))
         {
-            // Get the Animator component of the Breakable block
-            Animator blockAnimator = other.gameObject.GetComponent<Animator>();
+            // Determine the direction of the collision
+            Vector3 collisionDirection = other.GetContact(0).normal;
 
-            if (blockAnimator != null)
+            // Only break the block if the player lands on top (collisionDirection == Vector3.up) and isJumping is true
+            if (collisionDirection == Vector3.up && isJumping)
             {
-                blockAnimator.SetTrigger("PlayBreak"); // Trigger the block's animation
+                Animator blockAnimator = other.gameObject.GetComponent<Animator>();
+                if (blockAnimator != null)
+                {
+                    blockAnimator.SetTrigger("PlayBreak"); // Trigger the break animation
+                }
+
+                // Destroy the block after the animation plays
+                Destroy(other.gameObject, 0.15f); // Add slight delay to match animation
             }
 
-            // Destroy the block after the animation plays (adjust timing as needed)
-            Destroy(other.gameObject, 0.15f); // Add a slight delay to match animation length
-            isJumping = false; // End the jumping phase
+            // Allow the player to stand on the block without breaking it
+            grounded = true;
+            OnLanding();
+            isJumping = false;
         }
         else if (other.gameObject.CompareTag("Ground"))
         {
+            // Handle landing on ground objects
             Vector3 normal = other.GetContact(0).normal;
-            if (normal == Vector3.up) // Ensure the player lands on the ground
+            if (normal == Vector3.up)
             {
                 grounded = true;
                 OnLanding();
@@ -113,6 +125,14 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+
+
+
+
+
+
+
 
 
 
@@ -140,4 +160,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
+
+
 

@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_Follow: {fileID: 6530443242219313151, guid: 0d3ff34280b07f94198c0450b2f5143b, type: 3}
   m_Lens:
     FieldOfView: 71.04086
     OrthographicSize: 5
@@ -175,6 +175,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ConfineMode: 0
   m_BoundingVolume: {fileID: 0}
-  m_BoundingShape2D: {fileID: 0}
+  m_BoundingShape2D: {fileID: 8466998013675345450, guid: e8e4c740ce2ab1c42874a507afd7b76d, type: 3}
   m_ConfineScreenEdges: 1
   m_Damping: 0

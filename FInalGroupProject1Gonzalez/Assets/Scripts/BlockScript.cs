@@ -5,7 +5,7 @@ public class BlockScript : MonoBehaviour
 {
     public Animator blockAnimator;  // Reference to the Animator component
     public string breakAnimationTrigger = "PlayBreak";  // The trigger name for the break animation
-    public float destructionDelay = 1f;  // Delay before destroying the block after animation
+    public float destructionDelay = 0.5f;  // Delay before destroying the block after animation
 
     private void Start()
     {
