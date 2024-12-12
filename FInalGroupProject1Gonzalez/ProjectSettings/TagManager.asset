@@ -11,6 +11,7 @@ TagManager:
   - Win
   - GameOverPanel
   - WinPanel
+  - Audio
   layers:
   - Default
   - TransparentFX

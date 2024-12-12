@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
+    AudioManager audioManager;
     private TimerManager timerManager;
     private float horizontal;
     private float speed = 8f;
@@ -26,11 +27,7 @@ public class PlayerController : MonoBehaviour
     private bool isJumping = false; // This will track if the player is in the "jumping phase"
     private bool isGameOver = false; // Flag to check if the game is over
 
-    private void Awake()
-    {
-
-    }
-
+  
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
