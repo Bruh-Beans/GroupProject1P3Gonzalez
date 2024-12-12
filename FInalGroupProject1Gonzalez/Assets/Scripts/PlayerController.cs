@@ -1,5 +1,3 @@
-
-
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,6 +6,7 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
+    private TimerManager timerManager;
     private float horizontal;
     private float speed = 8f;
     private bool isFacingRight = true;
@@ -19,12 +18,13 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     [Header("Events")]
     [Space]
-    
+
     public UnityEvent OnLandEvent;
 
     [SerializeField] private Rigidbody2D rb;
 
     private bool isJumping = false; // This will track if the player is in the "jumping phase"
+    private bool isGameOver = false; // Flag to check if the game is over
 
     private void Awake()
     {
@@ -36,11 +36,30 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         if (OnLandEvent == null)
             OnLandEvent = new UnityEvent();
+        {
+            // Get the TimerManager script from the scene
+            timerManager = FindObjectOfType<TimerManager>();
+        }
     }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            // Check if the player collides with an object tagged as "Win"
+            if (other.CompareTag("Win"))
+            {
+                // Call the PlayerWins() method from the TimerManager
+                if (timerManager != null)
+                {
+                    timerManager.PlayerWins();
+                }
+            }
+        }
+
+    
 
     void Update()
     {
-        if (!isDead) // Only allow actions if player is not dead
+        if (!isDead && !isGameOver) // Only allow actions if player is not dead and game is not over
         {
             animator.SetFloat("Speed", Mathf.Abs(horizontal));
             horizontal = Input.GetAxisRaw("Horizontal");
@@ -74,7 +93,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        if (!isGameOver) // Prevent movement if game is over
+        {
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        }
     }
 
     private void Flip()
@@ -124,18 +146,12 @@ public class PlayerController : MonoBehaviour
                 isJumping = false;
             }
         }
+        else if (other.gameObject.CompareTag("Win"))
+        {
+            // Player wins the game
+            FindObjectOfType<TimerManager>().PlayerWins();
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
 
     private IEnumerator DestroyAfterAnimation(GameObject block)
     {
@@ -157,6 +173,18 @@ public class PlayerController : MonoBehaviour
         {
             grounded = false;
             animator.SetBool("IsJumping", true);
+        }
+    }
+
+    // Call this function when the game is over to stop the player from moving
+    public void SetGameOver(bool gameOver)
+    {
+        isGameOver = gameOver; // Set the game over state
+        if (gameOver)
+        {
+            // Optionally, you can show the "Game Over" UI panel here if not already shown
+            // Example:
+            // FindObjectOfType<TimerManager>().ActivateGameOverPanel();
         }
     }
 }

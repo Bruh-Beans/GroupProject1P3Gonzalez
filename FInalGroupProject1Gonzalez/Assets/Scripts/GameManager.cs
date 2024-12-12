@@ -1,63 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public TextMeshProUGUI livesText;
-    public Button restartButton;
-    public Button startButton;
-    public GameObject titleScreen;
-    public bool isGameActive;
-    bool gamePaused = false;
-    public GameObject pauseMenuUI;
+    public GameObject pausePanel; // Reference to the Pause Menu Panel
+    private bool isPaused = false; // Keeps track of whether the game is paused
 
-    private LockCursor lockCursor;
-
+    // Start is called before the first frame update
     void Start()
     {
-        lockCursor = GameObject.Find("LockCursorManager").GetComponent<LockCursor>();
-        lockCursor.Unlock(); // Unlock cursor when on title screen
-    }
-
-    void Update()
-    {
-        PauseMenu();
-    }
-
-
-    public void StartGame(int difficulty)
-    {
-        isGameActive = true; // Set game active when game starts
-        titleScreen.SetActive(false);
-        lockCursor.Lock(); // Lock cursor when the game starts
-    }
-    void PauseMenu()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (pausePanel != null)
         {
-            if (gamePaused)
-            {
-                gamePaused = false;
-                Time.timeScale = 1f;
-                pauseMenuUI.SetActive(false);
-                isGameActive = true;
-            }
-            else if (Input.GetKeyDown(KeyCode.Space) && isGameActive)
-            {
-                if (!gamePaused)
-                {
-
-                    Time.timeScale = 0f;
-                    pauseMenuUI.SetActive(true);
-                    gamePaused = true;
-                    isGameActive = false;
-                }
-
-            }
+            pausePanel.SetActive(false); // Ensure the pause panel is hidden initially
         }
     }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) // Check for the "Escape" key (to pause/unpause the game)
+        {
+            TogglePause();
+        }
+    }
+
+    // Toggle the pause state
+    public void TogglePause()
+    {
+        isPaused = !isPaused; // Toggle the paused state
+        if (isPaused)
+        {
+            Time.timeScale = 0; // Pause the game by setting the time scale to 0
+            pausePanel.SetActive(true); // Show the pause panel
+        }
+        else
+        {
+            Time.timeScale = 1; // Unpause the game by resetting the time scale
+            pausePanel.SetActive(false); // Hide the pause panel
+        }
+    }
+
+    // Method to resume the game (attached to the "Resume" button in the pause menu)
+    public void ResumeGame()
+    {
+        TogglePause(); // Toggle the pause state (this will unpause the game)
+    }
+
+    // Method to load the main menu (attached to the "Main Menu" button in the pause menu)
+    public void ReturnToMainMenu()
+    {
+        Time.timeScale = 1; // Ensure the game is unpaused when returning to the main menu
+        SceneManager.LoadScene(0); // Load the main menu scene (index 0)
+    }
+
+    // Method to quit the game (optional, attached to a Quit button in the pause menu)
+    public void QuitGame()
+    {
+        Application.Quit(); // Quit the game
+    }
 }
+
+
+

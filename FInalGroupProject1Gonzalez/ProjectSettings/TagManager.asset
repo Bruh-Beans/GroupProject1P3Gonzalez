@@ -8,6 +8,9 @@ TagManager:
   - Teleporter
   - Wall
   - Breakable
+  - Win
+  - GameOverPanel
+  - WinPanel
   layers:
   - Default
   - TransparentFX
