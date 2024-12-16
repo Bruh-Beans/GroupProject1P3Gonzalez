@@ -2047,7 +2047,7 @@ Transform:
   m_GameObject: {fileID: 611156990}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.326199, y: 0.00013780594, z: -10.079}
+  m_LocalPosition: {x: -14.966045, y: 0.00010585785, z: -10.079}
   m_LocalScale: {x: 7.8007507, y: 1.221, z: 1.221}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2348,7 +2348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2253911629886400664, guid: f990349adaf35824cbd36412735895ee, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: f990349adaf35824cbd36412735895ee, type: 3}
       propertyPath: m_LocalScale.x
@@ -5077,10 +5077,6 @@ PrefabInstance:
     - target: {fileID: 2825065231644500055, guid: 74750259c508a76468ddedcb887ba379, type: 3}
       propertyPath: m_Name
       value: floor blocks (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2825065231644500055, guid: 74750259c508a76468ddedcb887ba379, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 3087603832465492018, guid: 74750259c508a76468ddedcb887ba379, type: 3}
       propertyPath: m_LocalPosition.x

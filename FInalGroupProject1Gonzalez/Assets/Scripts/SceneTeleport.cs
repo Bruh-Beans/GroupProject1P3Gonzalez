@@ -5,14 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneTeleport : MonoBehaviour
 {
-
-    AudioManager audioManager;
     public int sceneBuildIndex;
 
-    private void Awake()
-    {
-        
-    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         print("Trigger Entered");
@@ -21,7 +15,7 @@ public class SceneTeleport : MonoBehaviour
         {
             print("Switching Scene to " + sceneBuildIndex);
             SceneManager.LoadScene(sceneBuildIndex, LoadSceneMode.Single);
-           
+
         }
     }
 }
